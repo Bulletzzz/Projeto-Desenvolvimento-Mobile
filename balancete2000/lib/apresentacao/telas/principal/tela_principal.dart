@@ -3,6 +3,7 @@ import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 import 'package:balancete2000/nucleo/utilitarios/analisador_numero.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 import 'package:balancete2000/apresentacao/widgets/cartao_gasto.dart';
+import 'package:balancete2000/apresentacao/telas/historico/tela_historico.dart';
 import 'package:balancete2000/dados/repositorio_gastos.dart';
 import 'package:balancete2000/dominio/modelos/gasto.dart';
 
@@ -80,6 +81,15 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     });
   }
 
+  void _abrirHistorico() {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (context) => TelaHistorico(gastos: _repositorio.gastos),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,6 +150,11 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             ElevatedButton(
               onPressed: _adicionar,
               child: const Text('Adicionar gasto'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: _abrirHistorico,
+              child: const Text('Ver por categoria'),
             ),
             const SizedBox(height: 12),
             Expanded(
