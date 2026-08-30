@@ -4,9 +4,15 @@ import 'package:balancete2000/dominio/modelos/gasto.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 
 class CartaoGasto extends StatelessWidget {
-  const CartaoGasto({super.key, required this.gasto, this.mostrarCategoria = true});
+  const CartaoGasto({
+    super.key,
+    required this.gasto,
+    this.aoRemover,
+    this.mostrarCategoria = true,
+  });
 
   final Gasto gasto;
+  final VoidCallback? aoRemover;
   final bool mostrarCategoria;
 
   @override
@@ -64,6 +70,30 @@ class CartaoGasto extends StatelessWidget {
               ),
             ),
           ),
+          if (aoRemover != null) ...[
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: aoRemover,
+              child: Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF9B1E00),
+                  border: Border.all(color: const Color(0xFF686868)),
+                  borderRadius: const BorderRadius.all(Radius.circular(3)),
+                ),
+                child: const Text(
+                  'X',
+                  style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

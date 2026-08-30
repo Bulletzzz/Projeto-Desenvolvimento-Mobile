@@ -4,6 +4,7 @@ import 'package:balancete2000/nucleo/utilitarios/analisador_numero.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 import 'package:balancete2000/apresentacao/widgets/cartao_gasto.dart';
 import 'package:balancete2000/dados/repositorio_gastos.dart';
+import 'package:balancete2000/dominio/modelos/gasto.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -49,6 +50,34 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
     _descricao.clear();
     _valor.clear();
+  }
+
+  Future<void> _confirmarRemocao(Gasto gasto) async {
+    final confirmado = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir lançamento'),
+        content: Text(
+          'Remover "${gasto.descricao}" no valor de '
+          '${FormatadorMoeda.formatar(gasto.valor)}?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmado != true) return;
+    setState(() {
+      _repositorio.remover(gasto.identificador);
+    });
   }
 
   @override
@@ -117,8 +146,12 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               child: ListView.builder(
                 itemCount: _repositorio.quantidade,
                 itemBuilder: (context, indice) {
+
                   final gasto = _repositorio.gastos[indice];
-                  return CartaoGasto(gasto: gasto);
+                  return CartaoGasto(
+                    gasto: gasto,
+                    aoRemover: () => _confirmarRemocao(gasto),
+                  );
                 },
               ),
             ),
