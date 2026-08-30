@@ -10,6 +10,7 @@ import 'package:balancete2000/dominio/modelos/gasto.dart';
 import 'package:balancete2000/apresentacao/widgets/janela_balancete.dart';
 import 'package:balancete2000/apresentacao/telas/principal/widgets/formulario_gasto.dart';
 import 'package:balancete2000/nucleo/tema/paleta.dart';
+import 'package:balancete2000/apresentacao/widgets/aviso_vazio.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -118,7 +119,12 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             Button(onPressed: _abrirHistorico, child: const Text('Ver por categoria')),
             const SizedBox(height: 12),
             Expanded(
-              child: ListView.builder(
+              child: _repositorio.quantidade == 0
+                  ? const AvisoVazio(
+                      mensagem: 'Nenhum gasto lançado ainda',
+                      detalhe: 'Preencha a descrição e o valor para começar.',
+                    )
+                  : ListView.builder(
                 itemCount: _repositorio.quantidade,
                 itemBuilder: (context, indice) {
                   final gasto = _repositorio.gastos[indice];

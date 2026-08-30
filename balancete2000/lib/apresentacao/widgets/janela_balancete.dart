@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:xp_ui/xp_ui.dart';
+import 'package:balancete2000/apresentacao/widgets/mascote.dart';
 
 class JanelaBalancete extends StatelessWidget {
   const JanelaBalancete({
@@ -22,6 +23,12 @@ class JanelaBalancete extends StatelessWidget {
     return XpWindow(
       titleBar: TitleBar(
         titulo,
+        leading: const [
+          Padding(
+            padding: EdgeInsets.only(right: 4),
+            child: LogoBalancete(altura: 18),
+          ),
+        ],
         trailing: [
           const TitleBarActionButton(icon: ActionButtonIcon.minimize),
           const TitleBarActionButton(icon: ActionButtonIcon.maximize),
