@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:xp_ui/xp_ui.dart';
 import 'package:balancete2000/apresentacao/telas/principal/tela_principal.dart';
+import 'package:balancete2000/nucleo/tema/tema_balancete.dart';
 
 void main() => runApp(const AplicativoBalancete());
 
@@ -8,9 +10,11 @@ class AplicativoBalancete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return XpApp(
       title: 'Balancete2000',
-      home: TelaPrincipal(),
+      theme: TemaBalancete.construir(),
+      debugShowCheckedModeBanner: false,
+      home: const TelaPrincipal(),
     );
   }
 }
