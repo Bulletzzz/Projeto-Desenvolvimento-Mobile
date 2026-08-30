@@ -3,6 +3,7 @@ import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 import 'package:balancete2000/dominio/modelos/gasto.dart';
 import 'package:balancete2000/nucleo/utilitarios/analisador_numero.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
+import 'package:balancete2000/apresentacao/widgets/cartao_gasto.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -126,11 +127,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 itemCount: _gastos.length,
                 itemBuilder: (context, indice) {
                   final gasto = _gastos[indice];
-                  return ListTile(
-                    title: Text(gasto.descricao),
-                    subtitle: Text(gasto.categoria.rotulo),
-                    trailing: Text(gasto.valor.toStringAsFixed(2)),
-                  );
+                  return CartaoGasto(gasto: gasto);
                 },
               ),
             ),
