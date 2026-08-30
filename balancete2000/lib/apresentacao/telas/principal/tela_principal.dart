@@ -1,11 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show MaterialPageRoute;
+import 'package:flutter/widgets.dart';
+import 'package:xp_ui/xp_ui.dart';
 import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
-import 'package:balancete2000/nucleo/utilitarios/analisador_numero.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 import 'package:balancete2000/apresentacao/widgets/cartao_gasto.dart';
 import 'package:balancete2000/apresentacao/telas/historico/tela_historico.dart';
 import 'package:balancete2000/dados/repositorio_gastos.dart';
 import 'package:balancete2000/dominio/modelos/gasto.dart';
+import 'package:balancete2000/apresentacao/widgets/janela_balancete.dart';
+import 'package:balancete2000/apresentacao/telas/principal/widgets/formulario_gasto.dart';
+import 'package:balancete2000/nucleo/tema/paleta.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -15,61 +19,39 @@ class TelaPrincipal extends StatefulWidget {
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
-  late TextEditingController _descricao;
-  late TextEditingController _valor;
   late RepositorioGastos _repositorio;
-  late CategoriaGasto _categoria;
 
   @override
   void initState() {
-    _descricao = TextEditingController();
-    _valor = TextEditingController();
     _repositorio = RepositorioGastos();
-    _categoria = CategoriaGasto.alimentacao;
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _descricao.dispose();
-    _valor.dispose();
-    super.dispose();
-  }
-
-  void _adicionar() {
-    final descricao = _descricao.text.trim();
-    final valor = AnalisadorNumero.analisar(_valor.text);
-    if (descricao.isEmpty || valor == null || valor <= 0) return;
-
+  void _adicionar(String descricao, double valor, CategoriaGasto categoria) {
     setState(() {
-      _repositorio.adicionar(
-        descricao: descricao,
-        valor: valor,
-        categoria: _categoria,
-      );
+      _repositorio.adicionar(descricao: descricao, valor: valor, categoria: categoria);
     });
-
-    _descricao.clear();
-    _valor.clear();
   }
 
   Future<void> _confirmarRemocao(Gasto gasto) async {
-    final confirmado = await showDialog<bool>(
+    final confirmado = await showXpDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Excluir lançamento'),
+      barrierDismissible: true,
+      builder: (context) => XpAlertDialog(
+        title: 'Excluir lançamento',
+        alerType: AlertType.question,
         content: Text(
-          'Remover "${gasto.descricao}" no valor de '
-          '${FormatadorMoeda.formatar(gasto.valor)}?',
+          'Remover "${gasto.descricao}" no valor de ${FormatadorMoeda.formatar(gasto.valor)}?',
+          style: const TextStyle(fontSize: 12),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
-          ),
-          TextButton(
+          Button(
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Excluir'),
+          ),
+          Button(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
           ),
         ],
       ),
@@ -92,16 +74,18 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Balancete2000')),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
+    return JanelaBalancete(
+      titulo: 'Balancete2000',
+      rodape: 'Total: ${FormatadorMoeda.formatar(_repositorio.total)}',
+      detalheRodape: '${_repositorio.quantidade} itens',
+      child: Padding(
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10),
-              color: const Color(0xFF0A57C2),
+              color: Paleta.azulTitulo,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -110,7 +94,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFFFFFFF),
+                      color: Paleta.branco,
                     ),
                   ),
                   Text(
@@ -118,50 +102,25 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFFFFFFF),
+                      color: Paleta.branco,
                     ),
                   ),
                   Text(
                     _repositorio.quantidade == 1 ? '1 lançamento' : '${_repositorio.quantidade} lançamentos',
-                    style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFF)),
+                    style: const TextStyle(fontSize: 11, color: Paleta.branco),
                   ),
                 ],
               ),
             ),
-            TextField(
-              controller: _descricao,
-              decoration: const InputDecoration(labelText: 'Descrição'),
-            ),
-            TextField(
-              controller: _valor,
-              decoration: const InputDecoration(labelText: 'Valor (R\$)'),
-            ),
-            DropdownButton<CategoriaGasto>(
-              value: _categoria,
-              isExpanded: true,
-              items: CategoriaGasto.values
-                  .map((categoria) => DropdownMenuItem(
-                        value: categoria,
-                        child: Text(categoria.rotulo),
-                      ))
-                  .toList(),
-              onChanged: (categoria) => setState(() => _categoria = categoria!),
-            ),
-            ElevatedButton(
-              onPressed: _adicionar,
-              child: const Text('Adicionar gasto'),
-            ),
             const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: _abrirHistorico,
-              child: const Text('Ver por categoria'),
-            ),
+            FormularioGasto(aoConfirmar: _adicionar),
+            const SizedBox(height: 8),
+            Button(onPressed: _abrirHistorico, child: const Text('Ver por categoria')),
             const SizedBox(height: 12),
             Expanded(
               child: ListView.builder(
                 itemCount: _repositorio.quantidade,
                 itemBuilder: (context, indice) {
-
                   final gasto = _repositorio.gastos[indice];
                   return CartaoGasto(
                     gasto: gasto,

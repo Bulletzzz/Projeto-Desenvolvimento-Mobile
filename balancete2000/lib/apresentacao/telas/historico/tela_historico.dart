@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:balancete2000/apresentacao/telas/historico/widgets/filtro_categorias.dart';
 import 'package:balancete2000/apresentacao/telas/historico/widgets/grupo_categoria.dart';
 import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 import 'package:balancete2000/dominio/modelos/gasto.dart';
 import 'package:balancete2000/dominio/servicos/resumo_categorias.dart';
+import 'package:balancete2000/apresentacao/widgets/janela_balancete.dart';
+import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 
 class TelaHistorico extends StatefulWidget {
   const TelaHistorico({super.key, required this.gastos});
@@ -25,10 +27,14 @@ class _TelaHistoricoState extends State<TelaHistorico> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Histórico por categoria')),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
+    final totalExibido = _resumos.fold<double>(0, (soma, resumo) => soma + resumo.subtotal);
+    return JanelaBalancete(
+      titulo: 'Histórico',
+      rodape: FormatadorMoeda.formatar(totalExibido),
+      detalheRodape: _filtro?.rotulo ?? 'Todas',
+      aoFechar: () => Navigator.pop(context),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -39,9 +45,7 @@ class _TelaHistoricoState extends State<TelaHistorico> {
             const SizedBox(height: 10),
             Expanded(
               child: ListView(
-                children: _resumos
-                    .map((resumo) => GrupoCategoria(resumo: resumo))
-                    .toList(),
+                children: _resumos.map((resumo) => GrupoCategoria(resumo: resumo)).toList(),
               ),
             ),
           ],
