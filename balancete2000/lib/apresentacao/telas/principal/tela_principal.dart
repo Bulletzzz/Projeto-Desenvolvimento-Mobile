@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 import 'package:balancete2000/dominio/modelos/gasto.dart';
 import 'package:balancete2000/nucleo/utilitarios/analisador_numero.dart';
+import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -16,6 +17,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   late List<Gasto> _gastos;
   late CategoriaGasto _categoria;
   late int _proximoIdentificador;
+
+  double get _total => _gastos.fold(0, (soma, gasto) => soma + gasto.valor);
 
   @override
   void initState() {
@@ -64,6 +67,36 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              color: const Color(0xFF0A57C2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'TOTAL GERAL',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFFFFFFF),
+                    ),
+                  ),
+                  Text(
+                    FormatadorMoeda.formatar(_total),
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFFFFFFF),
+                    ),
+                  ),
+                  Text(
+                    _gastos.length == 1 ? '1 lançamento' : '${_gastos.length} lançamentos',
+                    style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFF)),
+                  ),
+                ],
+              ),
+            ),
             TextField(
               controller: _descricao,
               decoration: const InputDecoration(labelText: 'Descrição'),
