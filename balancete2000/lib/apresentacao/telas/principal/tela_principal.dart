@@ -11,6 +11,7 @@ import 'package:balancete2000/apresentacao/widgets/janela_balancete.dart';
 import 'package:balancete2000/apresentacao/telas/principal/widgets/formulario_gasto.dart';
 import 'package:balancete2000/nucleo/tema/paleta.dart';
 import 'package:balancete2000/apresentacao/widgets/aviso_vazio.dart';
+import 'package:balancete2000/apresentacao/telas/area_trabalho/tela_area_trabalho.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -73,12 +74,48 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     );
   }
 
+  Future<void> _confirmarSaida() async {
+    final sair = await showXpDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => XpAlertDialog(
+        title: 'Sair do Balancete2000',
+        alerType: AlertType.warning,
+        content: const Text(
+          'Deseja realmente encerrar o programa?',
+          style: TextStyle(fontSize: 12),
+        ),
+        actions: [
+          Button(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Sim'),
+          ),
+          Button(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Não'),
+          ),
+        ],
+      ),
+    );
+
+    if (sair != true || !mounted) return;
+    await Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (context) => TelaAreaTrabalho(
+          aoAbrirAplicativo: () => Navigator.pop(context),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return JanelaBalancete(
       titulo: 'Balancete2000',
       rodape: 'Total: ${FormatadorMoeda.formatar(_repositorio.total)}',
       detalheRodape: '${_repositorio.quantidade} itens',
+      aoFechar: _confirmarSaida,
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
