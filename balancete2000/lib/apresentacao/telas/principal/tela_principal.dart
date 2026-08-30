@@ -60,6 +60,34 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     _valor.clear();
   }
 
+  Future<void> _confirmarRemocao(Gasto gasto) async {
+    final confirmado = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir lançamento'),
+        content: Text(
+          'Remover "${gasto.descricao}" no valor de '
+          '${FormatadorMoeda.formatar(gasto.valor)}?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmado != true) return;
+    setState(() {
+      _gastos.removeWhere((item) => item.identificador == gasto.identificador);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,7 +155,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 itemCount: _gastos.length,
                 itemBuilder: (context, indice) {
                   final gasto = _gastos[indice];
-                  return CartaoGasto(gasto: gasto);
+                  return CartaoGasto(
+                    gasto: gasto,
+                    aoRemover: () => _confirmarRemocao(gasto),
+                  );
                 },
               ),
             ),
