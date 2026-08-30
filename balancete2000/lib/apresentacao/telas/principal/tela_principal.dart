@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
-import 'package:balancete2000/dominio/modelos/gasto.dart';
 import 'package:balancete2000/nucleo/utilitarios/analisador_numero.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 import 'package:balancete2000/apresentacao/widgets/cartao_gasto.dart';
+import 'package:balancete2000/dados/repositorio_gastos.dart';
 
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
@@ -15,19 +15,15 @@ class TelaPrincipal extends StatefulWidget {
 class _TelaPrincipalState extends State<TelaPrincipal> {
   late TextEditingController _descricao;
   late TextEditingController _valor;
-  late List<Gasto> _gastos;
+  late RepositorioGastos _repositorio;
   late CategoriaGasto _categoria;
-  late int _proximoIdentificador;
-
-  double get _total => _gastos.fold(0, (soma, gasto) => soma + gasto.valor);
 
   @override
   void initState() {
     _descricao = TextEditingController();
     _valor = TextEditingController();
-    _gastos = [];
+    _repositorio = RepositorioGastos();
     _categoria = CategoriaGasto.alimentacao;
-    _proximoIdentificador = 1;
     super.initState();
   }
 
@@ -44,15 +40,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     if (descricao.isEmpty || valor == null || valor <= 0) return;
 
     setState(() {
-      _gastos.insert(
-        0,
-        Gasto(
-          identificador: _proximoIdentificador++,
-          descricao: descricao,
-          valor: valor,
-          categoria: _categoria,
-          registradoEm: DateTime.now(),
-        ),
+      _repositorio.adicionar(
+        descricao: descricao,
+        valor: valor,
+        categoria: _categoria,
       );
     });
 
@@ -84,7 +75,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     ),
                   ),
                   Text(
-                    FormatadorMoeda.formatar(_total),
+                    FormatadorMoeda.formatar(_repositorio.total),
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -92,7 +83,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     ),
                   ),
                   Text(
-                    _gastos.length == 1 ? '1 lançamento' : '${_gastos.length} lançamentos',
+                    _repositorio.quantidade == 1 ? '1 lançamento' : '${_repositorio.quantidade} lançamentos',
                     style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFF)),
                   ),
                 ],
@@ -124,9 +115,9 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             const SizedBox(height: 12),
             Expanded(
               child: ListView.builder(
-                itemCount: _gastos.length,
+                itemCount: _repositorio.quantidade,
                 itemBuilder: (context, indice) {
-                  final gasto = _gastos[indice];
+                  final gasto = _repositorio.gastos[indice];
                   return CartaoGasto(gasto: gasto);
                 },
               ),
