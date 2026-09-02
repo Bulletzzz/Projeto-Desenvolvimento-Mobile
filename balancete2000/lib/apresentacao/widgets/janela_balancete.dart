@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:xp_ui/xp_ui.dart';
 import 'package:balancete2000/apresentacao/widgets/mascote.dart';
+import 'package:balancete2000/nucleo/tema/paleta.dart';
 
 class JanelaBalancete extends StatelessWidget {
   const JanelaBalancete({
@@ -20,6 +21,18 @@ class JanelaBalancete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final recuos = MediaQuery.paddingOf(context);
+    final largura = MediaQuery.sizeOf(context).width;
+    return Column(
+      children: [
+        Container(height: recuos.top, color: Paleta.azulTitulo),
+        Expanded(child: _janela(recuos, largura)),
+        Container(height: recuos.bottom, color: Paleta.fundoJanela),
+      ],
+    );
+  }
+
+  Widget _janela(EdgeInsets recuos, double largura) {
     return XpWindow(
       titleBar: TitleBar(
         titulo,
@@ -37,11 +50,35 @@ class JanelaBalancete extends StatelessWidget {
       ),
       statusBar: StatusBar(
         trailing: [
-          if (detalheRodape != null) Text(detalheRodape!, style: const TextStyle(fontSize: 11)),
+          if (detalheRodape != null)
+            _TextoRodape(texto: detalheRodape!, largura: largura * 0.3),
         ],
-        child: Text(rodape, style: const TextStyle(fontSize: 11)),
+        child: _TextoRodape(texto: rodape, largura: largura * 0.45),
       ),
-      child: child,
+      child: Padding(
+        padding: EdgeInsets.only(left: recuos.left, right: recuos.right),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _TextoRodape extends StatelessWidget {
+  const _TextoRodape({required this.texto, required this.largura});
+
+  final String texto;
+  final double largura;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: largura,
+      child: Text(
+        texto,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontSize: 11),
+      ),
     );
   }
 }

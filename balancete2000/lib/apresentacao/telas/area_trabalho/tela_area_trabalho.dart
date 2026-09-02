@@ -44,7 +44,10 @@ class _TelaAreaTrabalhoState extends State<TelaAreaTrabalho> {
               ),
             ),
           ),
-          BarraTarefas(horario: _horario),
+          BarraTarefas(
+            horario: _horario,
+            recuoInferior: MediaQuery.paddingOf(context).bottom,
+          ),
         ],
       ),
     );

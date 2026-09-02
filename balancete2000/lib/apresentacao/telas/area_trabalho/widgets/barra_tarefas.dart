@@ -1,14 +1,16 @@
 import 'package:flutter/widgets.dart';
 
 class BarraTarefas extends StatelessWidget {
-  const BarraTarefas({super.key, required this.horario});
+  const BarraTarefas({super.key, required this.horario, this.recuoInferior = 0});
 
   final String horario;
+  final double recuoInferior;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 34,
+      height: 34 + recuoInferior, 
+      padding: EdgeInsets.only(bottom: recuoInferior),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF2A5BD7), Color(0xFF3F8CF3), Color(0xFF2A5BD7)],

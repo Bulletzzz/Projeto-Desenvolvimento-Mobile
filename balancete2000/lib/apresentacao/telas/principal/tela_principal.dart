@@ -162,6 +162,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                       detalhe: 'Preencha a descrição e o valor para começar.',
                     )
                   : ListView.builder(
+                padding: const EdgeInsets.only(top: 4, right:14),
                 itemCount: _repositorio.quantidade,
                 itemBuilder: (context, indice) {
                   final gasto = _repositorio.gastos[indice];

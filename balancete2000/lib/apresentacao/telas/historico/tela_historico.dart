@@ -45,7 +45,10 @@ class _TelaHistoricoState extends State<TelaHistorico> {
             const SizedBox(height: 10),
             Expanded(
               child: ListView(
-                children: _resumos.map((resumo) => GrupoCategoria(resumo: resumo)).toList(),
+                padding: const EdgeInsets.only(right: 14),
+                children: _resumos
+                    .map((resumo) => GrupoCategoria(resumo: resumo))
+                    .toList(),
               ),
             ),
           ],
