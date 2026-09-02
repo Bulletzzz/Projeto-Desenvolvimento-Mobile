@@ -3,6 +3,7 @@ import 'package:balancete2000/apresentacao/widgets/etiqueta_categoria.dart';
 import 'package:balancete2000/dominio/modelos/gasto.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 
+/// Gasto em cartão
 class CartaoGasto extends StatelessWidget {
   const CartaoGasto({
     super.key,

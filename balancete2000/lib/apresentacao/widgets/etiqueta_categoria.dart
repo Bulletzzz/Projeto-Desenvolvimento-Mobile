@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 
+/// Badge colorida com nome da categoria.
 class EtiquetaCategoria extends StatelessWidget {
   const EtiquetaCategoria({super.key, required this.categoria});
 

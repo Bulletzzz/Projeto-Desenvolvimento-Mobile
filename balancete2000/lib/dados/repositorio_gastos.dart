@@ -2,6 +2,7 @@ import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 import 'package:balancete2000/dominio/modelos/gasto.dart';
 import 'package:balancete2000/dominio/servicos/resumo_categorias.dart';
 
+/// CRUD
 class RepositorioGastos {
   final List<Gasto> _gastos = <Gasto>[];
   int _proximoIdentificador = 1;

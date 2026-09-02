@@ -1,6 +1,7 @@
 import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 import 'package:balancete2000/dominio/modelos/gasto.dart';
 
+/// Resumo de gastos por categoria
 class ResumoCategoria {
   const ResumoCategoria({
     required this.categoria,
@@ -17,6 +18,7 @@ class ResumoCategoria {
   bool get vazio => gastos.isEmpty;
 }
 
+/// Cálculos de gastos por categoria.
 class ResumoCategorias {
   static double total(List<Gasto> gastos) {
     return gastos.fold(0, (soma, gasto) => soma + gasto.valor);

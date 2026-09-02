@@ -3,6 +3,7 @@ import 'package:balancete2000/apresentacao/widgets/cartao_gasto.dart';
 import 'package:balancete2000/dominio/servicos/resumo_categorias.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 
+/// Agrupa e exibe gastos de uma categoria com cabeçalho e subtotal.
 class GrupoCategoria extends StatelessWidget {
   const GrupoCategoria({super.key, required this.resumo});
 

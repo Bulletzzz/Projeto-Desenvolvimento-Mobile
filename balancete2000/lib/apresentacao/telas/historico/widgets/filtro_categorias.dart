@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 
+/// Abas de filtro para selecionar categoria 
 class FiltroCategorias extends StatelessWidget {
   const FiltroCategorias({
     super.key,

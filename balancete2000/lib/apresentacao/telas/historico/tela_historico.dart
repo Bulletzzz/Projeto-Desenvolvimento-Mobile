@@ -7,6 +7,7 @@ import 'package:balancete2000/dominio/servicos/resumo_categorias.dart';
 import 'package:balancete2000/apresentacao/widgets/janela_balancete.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
 
+/// Tela de histórico com visualização e filtro de categoria.
 class TelaHistorico extends StatefulWidget {
   const TelaHistorico({super.key, required this.gastos});
 

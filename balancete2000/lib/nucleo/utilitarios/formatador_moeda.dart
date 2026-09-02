@@ -1,3 +1,4 @@
+/// Formatação de valores para R$
 class FormatadorMoeda {
   static String formatar(double valor) {
     final partes = valor.abs().toStringAsFixed(2).split('.');

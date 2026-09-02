@@ -13,6 +13,7 @@ import 'package:balancete2000/nucleo/tema/paleta.dart';
 import 'package:balancete2000/apresentacao/widgets/aviso_vazio.dart';
 import 'package:balancete2000/apresentacao/telas/area_trabalho/tela_area_trabalho.dart';
 
+/// Tela principal - Resumo de gastos e formulário para adicionar.
 class TelaPrincipal extends StatefulWidget {
   const TelaPrincipal({super.key});
 

@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+/// SVG do mascote
 class Mascote extends StatelessWidget {
   const Mascote({super.key, this.altura = 72});
 
@@ -16,6 +17,7 @@ class Mascote extends StatelessWidget {
   }
 }
 
+/// SVG do logo
 class LogoBalancete extends StatelessWidget {
   const LogoBalancete({super.key, this.altura = 20});
 

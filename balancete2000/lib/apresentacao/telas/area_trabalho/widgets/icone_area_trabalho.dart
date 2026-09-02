@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:balancete2000/apresentacao/widgets/mascote.dart';
 
+/// Ícone de atalho para abrir aplicativo.
 class IconeAreaTrabalho extends StatelessWidget {
   const IconeAreaTrabalho({super.key, required this.rotulo, required this.aoAbrir});
 

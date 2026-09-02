@@ -1,3 +1,4 @@
+/// Analisa e converte texto em números
 class AnalisadorNumero {
   static final RegExp _caracteresValidos = RegExp(r'[^0-9.,\-]');
   static final RegExp _numero = RegExp(r'-?\d+(?:\.\d+)?');

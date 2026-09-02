@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+/// Barra de tarefas com botão iniciar e relógio.
 class BarraTarefas extends StatelessWidget {
   const BarraTarefas({super.key, required this.horario, this.recuoInferior = 0});
 

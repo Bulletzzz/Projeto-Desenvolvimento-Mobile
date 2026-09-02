@@ -3,6 +3,7 @@ import 'package:xp_ui/xp_ui.dart';
 import 'package:balancete2000/apresentacao/widgets/mascote.dart';
 import 'package:balancete2000/nucleo/tema/paleta.dart';
 
+/// Janela base 
 class JanelaBalancete extends StatelessWidget {
   const JanelaBalancete({
     super.key,

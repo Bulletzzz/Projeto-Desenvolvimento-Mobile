@@ -5,6 +5,7 @@ import 'package:balancete2000/dominio/enums/categoria_gasto.dart';
 import 'package:balancete2000/nucleo/tema/paleta.dart';
 import 'package:balancete2000/nucleo/utilitarios/analisador_numero.dart';
 
+/// Formulário para criar novo gasto com validação.
 class FormularioGasto extends StatefulWidget {
   const FormularioGasto({super.key, required this.aoConfirmar});
 

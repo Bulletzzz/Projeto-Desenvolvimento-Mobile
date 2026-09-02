@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:balancete2000/apresentacao/telas/area_trabalho/widgets/barra_tarefas.dart';
 import 'package:balancete2000/apresentacao/telas/area_trabalho/widgets/icone_area_trabalho.dart';
 
+/// Area de trabalho windows xp
 class TelaAreaTrabalho extends StatefulWidget {
   const TelaAreaTrabalho({super.key, required this.aoAbrirAplicativo});
 
