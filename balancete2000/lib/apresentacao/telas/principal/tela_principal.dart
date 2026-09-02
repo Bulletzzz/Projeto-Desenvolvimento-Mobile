@@ -11,6 +11,7 @@ import 'package:balancete2000/apresentacao/widgets/janela_balancete.dart';
 import 'package:balancete2000/apresentacao/telas/principal/widgets/formulario_gasto.dart';
 import 'package:balancete2000/nucleo/tema/paleta.dart';
 import 'package:balancete2000/apresentacao/widgets/aviso_vazio.dart';
+import 'package:balancete2000/apresentacao/widgets/mascote.dart';
 import 'package:balancete2000/apresentacao/telas/area_trabalho/tela_area_trabalho.dart';
 
 /// Tela principal - Resumo de gastos e formulário para adicionar.
@@ -125,28 +126,36 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               width: double.infinity,
               padding: const EdgeInsets.all(10),
               color: Paleta.azulTitulo,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  const Text(
-                    'TOTAL GERAL',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: Paleta.branco,
+                  const Mascote(altura: 56),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'TOTAL GERAL',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Paleta.branco,
+                          ),
+                        ),
+                        Text(
+                          FormatadorMoeda.formatar(_repositorio.total),
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Paleta.branco,
+                          ),
+                        ),
+                        Text(
+                          _repositorio.quantidade == 1 ? '1 lançamento' : '${_repositorio.quantidade} lançamentos',
+                          style: const TextStyle(fontSize: 11, color: Paleta.branco),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text(
-                    FormatadorMoeda.formatar(_repositorio.total),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Paleta.branco,
-                    ),
-                  ),
-                  Text(
-                    _repositorio.quantidade == 1 ? '1 lançamento' : '${_repositorio.quantidade} lançamentos',
-                    style: const TextStyle(fontSize: 11, color: Paleta.branco),
                   ),
                 ],
               ),
@@ -163,7 +172,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                       detalhe: 'Preencha a descrição e o valor para começar.',
                     )
                   : ListView.builder(
-                padding: const EdgeInsets.only(top: 4, right:14),
+                padding: const EdgeInsets.only(top: 4, right: 14),
                 itemCount: _repositorio.quantidade,
                 itemBuilder: (context, indice) {
                   final gasto = _repositorio.gastos[indice];

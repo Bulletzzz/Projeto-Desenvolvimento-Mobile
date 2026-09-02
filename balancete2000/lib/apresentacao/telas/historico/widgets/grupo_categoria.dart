@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:balancete2000/apresentacao/widgets/cartao_gasto.dart';
 import 'package:balancete2000/dominio/servicos/resumo_categorias.dart';
 import 'package:balancete2000/nucleo/utilitarios/formatador_moeda.dart';
+import 'package:xp_ui/xp_ui.dart';
 
 /// Agrupa e exibe gastos de uma categoria com cabeçalho e subtotal.
 class GrupoCategoria extends StatelessWidget {
@@ -64,9 +65,15 @@ class GrupoCategoria extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          Text(
-            '${(resumo.participacao * 100).toStringAsFixed(1)}% do total',
-            style: const TextStyle(fontSize: 11, color: Color(0xFF5C5C5C)),
+          Row(
+            children: [
+              Expanded(child: ProgressBar(value: resumo.participacao * 100)),
+              const SizedBox(width: 8),
+              Text(
+                '${(resumo.participacao * 100).toStringAsFixed(1)}%',
+                style: const TextStyle(fontSize: 11, color: Color(0xFF5C5C5C)),
+              ),
+            ],
           ),
           const SizedBox(height: 6),
           if (resumo.vazio)
